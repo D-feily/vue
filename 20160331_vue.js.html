@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>遍历</title>
+    <style type="text/css">
+        span{
+            display: inline-block;
+            width: 80px;
+            overflow: hidden;
+            padding: 10px 20px;
+        }
+        button{
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <div v-for="book in books ">
+        <span>{{book.id}}</span>
+        <span>{{book.name}}</span>
+        <span>{{book.author}}</span>
+        <span>{{book.price}}</span>
+        <button type="button" class="btn btn-danger" @click="delBook(book)">删除</button>
+    </div>
+    <div>
+        <span></span>
+        <span></span>
+        <span>总价</span>
+        <span>{{sum}}</span>
+    </div>
+
+    <div id="add-book">
+        <legend>添加书籍</legend>
+        <div class="form-group">
+            <label for="">书名</label>
+            <input type="text" class="form-control" v-model="book.name">
+        </div>
+        <div class="form-group">
+            <label for="">作者</label>
+            <input type="text" class="form-control" v-model="book.author">
+        </div>
+        <div class="form-group">
+            <label for="">价格</label>
+            <input type="text" class="form-control" v-model="book.price">
+        </div>
+        <button class="btn btn-primary btn-block" v-on:click="addBook()">添加</button>
+    </div>
+
+
+</div>
+
+<script src="../20160315_practice/20160329_vue.js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            book: {
+                id: 0,
+                author: '',
+                name: '',
+                price: ''
+            },
+            books: [{
+                id: 1,
+                author: '曹雪芹',
+                name: '红楼梦',
+                price: 32.0
+            }, {
+                id: 2,
+                author: '施耐庵',
+                name: '水浒传',
+                price: 30.0
+            }, {
+                id: '3',
+                author: '罗贯中',
+                name: '三国演义',
+                price: 24.0
+            }, {
+                id: 4,
+                author: '吴承恩',
+                name: '西游记',
+                price: 20.0
+            }]
+        },
+        methods: {
+            addBook: function() {
+                //计算书的id
+                this.book.id = this.books.length + 1;
+                this.books.push(this.book);
+                //将input中的数据重置
+                this.book = '';
+            },
+            delBook:function(book){
+                this.books.$remove(book);
+            }
+        },
+        computed: {
+            sum: function() {
+                var result = 0;
+                for (var i = 0; i < this.books.length; i++) {
+                    result = Number(this.books[i].price) + result;
+                }
+                return result;
+            }
+        }
+    })
+</script>
+</body>
+</html>
